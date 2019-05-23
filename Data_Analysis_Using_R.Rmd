@@ -1,0 +1,290 @@
+---
+title: 'DATA 698: Data Analysis with R'
+author: "Md Jalal Uddin"
+date: "May 18, 2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(ggplot2)
+
+```
+
+
+```{r}
+# BMI Comparison Between Control and Treatment Participant of Group1
+df <- data.frame(Intervention=rep(c("BMI Control", "BMI Treatment"), each=2),
+                BMI_Time=rep(c("Baseline", "Endpoint"),2),
+                BMI_Number=c(28.139, 28.556, 28.122, 28.061))
+head(df)
+
+```
+
+```{r}
+ggplot(data=df, aes(x=Intervention, y=BMI_Number, fill=BMI_Time)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=BMI_Number), vjust=1.5, color="black",
+            position = position_dodge(.9), size=3.5)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="BMI of Group1:Control VS Treatment")
+
+
+```
+
+
+```{r}
+# BMI Comparison Between Control and Treatment Participant of Group2
+
+df <- data.frame(Intervention=rep(c("BMI Control", "BMI Treatment"), each=2),
+                BMI_Time=rep(c("Baseline", "Endpoint"),2),
+                BMI_Number=c(27.8, 27.99, 28.1041, 27.428))
+head(df)
+
+```
+```{r}
+ggplot(data=df, aes(x=Intervention, y=BMI_Number, fill=BMI_Time)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=BMI_Number), vjust=1.5, color="black",
+            position = position_dodge(.9), size=3.5)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="BMI of Group2:Control VS Treatment") 
+        
+
+```
+
+
+```{r}
+# Blood Pressure Comparison Between Control and Treatment Participant of Group2
+
+df <- data.frame(BP_Interven=rep(c("Systolic Control", "Diastolic Control","Systolic Treatment","Diastolic Treatment"), each=2),
+                BP_Group=rep(c("Baseline", "Endpoint"),2),
+                Blood_pressure=c(143.466, 136.05, 89.915,83.06,138.283,128.39,87.995,80.439))
+head(df)
+
+```
+
+```{r}
+
+ggplot(data=df, aes(x=BP_Interven, y=Blood_pressure, fill=BP_Group)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=Blood_pressure), vjust=1.5, color="black",
+            position = position_dodge(.9), size=3.5)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="Blood Pressure of Group2: Control VS Treatment")
+
+```
+```{r}
+
+library(dplyr)
+library(ggplot2)
+library(ggmap) # for theme_nothing
+
+```
+
+
+```{r}
+
+# Piechart of Participant distribution Among CHW in Round1
+
+x <- c(3, 33, 27,37,8,44,15)
+ 
+CHW <-  c("HZ","MA","MH","MJU","SS","SZ","None")
+
+pct<- round(100*x/sum(x), 1)
+
+label<-paste(CHW,pct)
+label<-paste(label,"%",sep="")
+
+# Plot the chart.
+pie(x, labels = label, main = "Round1: Participant Distribution Among CHW",col = rainbow(length(x)))
+legend("topright", c("HZ","MA","MH","MJU","SS","SZ","None"), cex = 0.9,
+   fill = rainbow(length(x)))
+ 
+
+
+
+```
+
+
+
+
+
+```{r}
+# Piechart of Participant distribution Among CHW in Round2
+
+x <- c(26, 14, 18,13,33,33)
+ 
+CHW <-  c("HZ","MA","MH","MJU","SS","SZ")
+
+pct<- round(100*x/sum(x), 1)
+
+label<-paste(CHW,pct)
+label<-paste(label,"%",sep="")
+
+# Plot the chart.
+pie(x, labels = label, main = "Round2: Participant Distribution Among CHW",col = rainbow(length(x)))
+legend("topright", c("HZ","MA","MH","MJU","SS","SZ"), cex = 0.9,
+   fill = rainbow(length(x)))
+
+```
+```{r}
+#Participant Distribution Among CHW in Round1 and Round2
+
+df <- data.frame(CHW=rep(c("HZ", "MA","MH","MJU", "SS", "SZ"), each=2),
+                Round=rep(c("Round1", "Round2"),2),
+                participant=c(3, 26, 33,14,27,18,37,13, 8 ,33, 44,33))
+head(df)
+
+ggplot(data=df, aes(x=CHW, y=participant, fill=Round)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=3.5)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="Participant Distribution Among CHW in Round1 and Round2")
+
+
+```
+
+```{r}
+#Program Introduction: Round1 VS Round2
+
+df <- data.frame(Category=rep(c("Control", "Treatment","Male","Female"), each=2),
+                Round=rep(c("Round1", "Round2"),2),
+                participant=c(81, 64, 86,73,77,63,90,74))
+head(df)
+
+ggplot(data=df, aes(x=Category, y=participant, fill=Round)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=3.5)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="Program Introduction: Round1 VS Round2")
+
+
+```
+
+```{r}
+#In general how would you rate your Physical Health?
+
+df <- data.frame(Category=rep(c("Excellent", "Verygood","Good","Fair","Poor"), each=4),
+                Intervention=rep(c("Control_Base","Control_End","Treatment_Base","Treatment_End"),5),
+                participant=c(2.46, 4.11, 2.33, 6.41, 
+                              19.75, 19.18, 20.93, 26.92, 55.55, 
+                              54.79, 53.48, 51.28,16.05, 20.55,
+                              19.77, 14.10, 4.94, 0, 3.49, 0))
+head(df)
+
+ggplot(data=df, aes(x=Category, y=participant, fill=Intervention)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=2.6)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="In general how would you rate your Physical Health?")
+
+```
+
+```{r}
+#Do you ever take your own blood pressure?
+
+df <- data.frame(Category=rep(c("No", "skip","Yes"), each=4),
+                Intervention=rep(c("Control_Base","Control_End","Treatment_Base","Treatment_End"),3),
+                participant=c(35.8, 40.3	,34.9, 34.6, 11.1, 1.4, 11.6, 1.3, 53.1, 58.3, 53.5, 64.1))
+head(df)
+
+ggplot(data=df, aes(x=Category, y=participant, fill=Intervention)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=2.6)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="Do you ever take your own blood pressure?")
+
+
+```
+
+```{r}
+
+#In general would you say your Health is?
+
+df <- data.frame(Category=rep(c("Excellent", "Fair","Good","Poor", "Verygood"), each=4),
+                Intervention=rep(c("Control_Base","Control_End","Treatment_Base","Treatment_End"),5),
+                participant=c(4.9, 4.1, 2.3, 7.7, 18.5, 12.3, 25.6, 14.1, 58.0, 65.8, 
+                              51.2, 53.8, 3.7, 0.0, 3.5, 0.0, 14.8, 17.8, 17.4, 24.4))
+head(df)
+
+ggplot(data=df, aes(x=Category, y=participant, fill=Intervention)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=2.6)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="In general would you say your Health is?")
+
+```
+
+
+```{r}
+#How well are you managing your high blood pressure?
+
+df <- data.frame(Category=rep(c("Not very well", "Not well at all","Skipped", "Very well", "Well enough"), each=4),
+                Intervention=rep(c("Control_Base","Control_End","Treatment_Base","Treatment_End"),5),
+                participant=c(34.6,	43.1,	29.4,	26.9, 0.0,	0.0,	2.4,	0.0, 7.4,		5.6,	4.7,	11.5, 8.6,		4.2,	9.4,	10.3, 49.4,		47.2,	54.1,	51.3))
+head(df)
+
+ggplot(data=df, aes(x=Category, y=participant, fill=Intervention)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=2.6)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="How well are you managing your high blood pressure?")
+
+```
+
+```{r}
+#To what extent are you able carry out your everyday physical activity?
+
+df <- data.frame(Category=rep(c("A little", "Completely","Moderately", "Mostly", "Not at all"), each=4),
+                Intervention=rep(c("Control_Base","Control_End","Treatment_Base","Treatment_End"),5),
+                participant=c(12.3,	26.0,	18.6,	15.4, 24.7,	9.6,	27.9, 14.1, 29.6,	34.2,	27.9,	35.9,  25.9,  26.0,	19.8,	25.6, 7.4,		4.1,	5.8,	9.0))
+head(df)
+
+ggplot(data=df, aes(x=Category, y=participant, fill=Intervention)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=2.6)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="To what extent do you carry out your everyday physical activity?")
+
+
+```
+
+
+```{r}
+#How much time do you usually spend doing moderate physical activity?
+
+df <- data.frame(Category=rep(c("Total participant", "0-30mins","31-60mins", "61-120mins", "121-300mins"), each=4),
+                Intervention=rep(c("Control_Base","Control_End","Treatment_Base","Treatment_End"),5),
+                participant=c(50,	36,	47,	59, 41,	27,  37,  53,  7,	9,   7,		6, 2,	0,	1,	0, 0,	0,	2,	0))
+head(df)
+
+ggplot(data=df, aes(x=Category, y=participant, fill=Intervention)) +
+  geom_bar(stat="identity", position=position_dodge(),width=.9)+
+  geom_text(aes(label=participant), vjust=1.5, color="black",
+            position = position_dodge(.9), size=2.6)+
+  scale_fill_brewer(palette="Paired")+
+  theme_minimal()+
+  labs(title="How much time do you usually spend doing moderate physical activity?")
+
+
+```
+
